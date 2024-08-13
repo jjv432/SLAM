@@ -34,29 +34,49 @@ def generate_launch_description():
         parameters=[left_usb_params]
     )
 
+
+    
+
+    # odom_tf = Node(
+    #     package = 'tf2_ros',
+    #     executable='static_transform_publisher',
+    #     output= 'screen',
+    #     arguments = [
+    #         "--x", "0",
+    #         "--y", "0",
+    #         "--z", "0",
+    #         "--roll", "0",
+    #         "--pitch", "0",
+    #         "--yaw", "0",
+    #         "--frame-id", "map",
+    #         "--child-frame-id", "odom"
+
+    #     ]
+    # )
+
     camera_base_tf = Node(
         package = 'tf2_ros',
         executable='static_transform_publisher',
         output= 'screen',
         arguments = [
-            "--x", "1",
-            "--y", "1",
-            "--z", "1",
-            "--roll", "1",
-            "--pitch", "1",
-            "--yaw", "1",
-            "--frame-id", "base_link",
+            "--x", "0",
+            "--y", "0",
+            "--z", "0",
+            "--roll", "0",
+            "--pitch", "0",
+            "--yaw", "0",
+            "--frame-id", "odom",
             "--child-frame-id", "camera_link"
 
-        ]
-    )
+             ]
+        )
 
     right_base_tf = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
             output='screen',
             arguments=[
-                "--x", "0",
+                "--x", ".080",
                 "--y", "0",
                 "--z", "0",
                 "--roll", "0",
@@ -65,31 +85,29 @@ def generate_launch_description():
                 "--frame-id", "camera_link",
                 "--child-frame-id", "right_camera_link"
                 ]
-        )  
+        )
     
     left_base_tf = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
             output='screen',
             arguments=[
-                "--x", "2",
-                "--y", "2",
-                "--z", "2",
-                "--roll", "2",
-                "--pitch", "2",
-                "--yaw", "2",
+                "--x", "-.040",
+                "--y", ".029",
+                "--z", "0",
+                "--roll", "0",
+                "--pitch", "0",
+                "--yaw", "0",
                 "--frame-id", "camera_link",
                 "--child-frame-id", "left_camera_link"
                 ]
         )
-    
-    
-    
     
     return launch.LaunchDescription([
         usb_cam_right,
         usb_cam_left,
         camera_base_tf,
         left_base_tf,
-        right_base_tf
+        right_base_tf,
+        # odom_tf
     ])
