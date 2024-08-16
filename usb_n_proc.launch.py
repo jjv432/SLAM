@@ -1,6 +1,5 @@
 import os
 import launch
-import yaml
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.conditions import LaunchConfigurationEquals
@@ -11,10 +10,26 @@ from launch_ros.actions import Node
 from launch_ros.descriptions import ComposableNode
 from launch.substitutions import LaunchConfiguration, EnvironmentVariable
 
-PROJECT_PATH = '/home/Slam/SLAM',
-RIGHT_CAMERA_CONFIG_PATH = os.path.join(PROJECT_PATH, '/CameraCalibration/right_camera.yaml'),
-LEFT_CAMERA_CONFIG_PATH = os.path.join(PROJECT_PATH, '/CameraCalibration/left_camera.yaml'),
-IMAGE_PROC_RECTIFY_CONFIG_PATH = os.path.join(PROJECT_PATH, '/ImageProc/image_proc_rectify_parameters.yaml')
+
+#Don't put commas after any of these!
+# PROJECT_PATH = "workspaces/Slam/SLAM"
+# RIGHT_CAMERA_CONFIG_PATH = os.path.join(PROJECT_PATH, "CameraCalibration/right_camera.yaml")
+# LEFT_CAMERA_CONFIG_PATH = os.path.join(PROJECT_PATH, "CameraCalibration/left_camera.yaml")
+# IMAGE_PROC_RECTIFY_CONFIG_PATH = os.path.join(PROJECT_PATH, "ImageProc/image_proc_rectify_parameters.yaml")
+# print(RIGHT_CAMERA_CONFIG_PATH)
+# print(LEFT_CAMERA_CONFIG_PATH)
+
+from pathlib import Path
+
+project_path = Path("workspaces/Slam/SLAM")
+
+right_camera_config_path = project_path / "CameraCalibration" / "right_camera.yaml"
+left_camera_config_path = project_path / "CameraCalibration" / "left_camera.yaml"
+image_proc_rectify_config_path = project_path / "ImageProcRectify" / "image_proc_rectify_parameters.yaml"
+
+print(right_camera_config_path)
+print(left_camera_config_path)
+print(image_proc_rectify_config_path)
 
 ####################################################
 ###################### TO DO  ######################
@@ -39,7 +54,8 @@ def generate_launch_description():
         executable='usb_cam_node_exe',
         namespace=right_namespace,
         output='screen',
-        parameters=[RIGHT_CAMERA_CONFIG_PATH]
+        parameters=[right_camera_config_path],
+     
     )
 
     #Left Usb Camera
@@ -48,7 +64,8 @@ def generate_launch_description():
         executable='usb_cam_node_exe',
         namespace=left_namespace,
         output='screen',
-        parameters=[LEFT_CAMERA_CONFIG_PATH]
+        parameters=[left_camera_config_path],
+      
     )
 
     ####################################################
@@ -62,17 +79,19 @@ def generate_launch_description():
             plugin='image_proc::DebayerNode',
             name='debayer_node',
             namespace= right_namespace,
+           
         ),
         ComposableNode(
             package = 'image_proc',
             plugin='image_proc::RectifyNode',
             name='rectify_mono_node',
             namespace=right_namespace,
-            parameters = [IMAGE_PROC_RECTIFY_CONFIG_PATH],
+            parameters = [image_proc_rectify_config_path],
             remappings=[
                 ('image', 'image_mono'),
                 ('image_rect', 'image_rect')
-            ]
+            ],
+         
 
         )    
     ]
@@ -84,13 +103,14 @@ def generate_launch_description():
             plugin='image_proc::DebayerNode',
             name='debayer_node',
             namespace= left_namespace,
+       
         ),
         ComposableNode(
             package = 'image_proc',
             plugin='image_proc::RectifyNode',
             name='rectify_mono_node',
             namespace=right_namespace,
-            parameters = [IMAGE_PROC_RECTIFY_CONFIG_PATH],
+            parameters = [image_proc_rectify_config_path],
             remappings=[
                 ('image', 'image_mono'),
                 ('image_rect', 'image_rect')
@@ -112,7 +132,7 @@ def generate_launch_description():
     image_processing_container = ComposableNodeContainer(
         condition=LaunchConfigurationEquals('container', ''),
         name='image_proc_container',
-        namespace=LaunchConfiguration('namespace'),
+        namespace="image_proc_container",
         package='rclcpp_components',
         executable='component_container',
         composable_node_descriptions=composable_nodes,
