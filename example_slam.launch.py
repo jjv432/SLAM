@@ -11,24 +11,30 @@ def generate_launch_description():
         parameters=[{
             
         
-        'rectified_images': False,
+        'rectified_images': True,
 
         'enable_imu_fusion': False,
         'debug_imu_mode': False,
         'enable_debug_mode': False,
+        'debug_dump_path': 'debug',
 
-        'enable_slam_visualization': True, # visualization may affects the performance
-        'enable_landmarks_view': True, # visualization may affects the performance
+        'enable_image_denoising': False,
+        
+        'enable_slam_visualization': False, # visualization may affects the performance
+        'enable_landmarks_view': False, # visualization may affects the performance
         'enable_observations_view': False, # visualization may affects the performance
 
-        'enable_localization_n_mapping': False,
+        'enable_localization_n_mapping': True,
 
-        'image_jitter_threshold_ms': 40.00, # for 30 FPS
+        'image_jitter_threshold_ms': 35.00, # for 30 FPS
         'sync_matching_threshold_ms': 10.0, # desync in ms between different cams
 
         'num_cameras': 2, # 2 cams within one stereo camera
         'base_frame': 'camera_link',
         'verbocity': 3,
+        
+        'image_buffer_size': 50,
+        
 
 
             # 'camera_optical_frames': [

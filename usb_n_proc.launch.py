@@ -1,6 +1,4 @@
-import os
 import launch
-from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.conditions import LaunchConfigurationEquals
 from launch.conditions import LaunchConfigurationNotEquals
@@ -8,17 +6,7 @@ from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import LoadComposableNodes
 from launch_ros.actions import Node
 from launch_ros.descriptions import ComposableNode
-from launch.substitutions import LaunchConfiguration, EnvironmentVariable
-from tf2_ros import StaticTransformBroadcaster
-
-
-#Don't put commas after any of these!
-# PROJECT_PATH = "workspaces/Slam/SLAM"
-# RIGHT_CAMERA_CONFIG_PATH = os.path.join(PROJECT_PATH, "CameraCalibration/right_camera.yaml")
-# LEFT_CAMERA_CONFIG_PATH = os.path.join(PROJECT_PATH, "CameraCalibration/left_camera.yaml")
-# IMAGE_PROC_RECTIFY_CONFIG_PATH = os.path.join(PROJECT_PATH, "ImageProc/image_proc_rectify_parameters.yaml")
-# print(RIGHT_CAMERA_CONFIG_PATH)
-# print(LEFT_CAMERA_CONFIG_PATH)
+from launch.substitutions import LaunchConfiguration
 
 from pathlib import Path
 
@@ -28,16 +16,9 @@ right_camera_config_path = project_path / "CameraCalibration" / "right_camera.ya
 left_camera_config_path = project_path / "CameraCalibration" / "left_camera.yaml"
 image_proc_rectify_config_path = project_path / "ImageProcRectify" / "image_proc_rectify_parameters.yaml"
 
-print(right_camera_config_path)
-print(left_camera_config_path)
-print(image_proc_rectify_config_path)
-
 ####################################################
 ###################### TO DO  ######################
 #################################################### 
-
-#See if the container stuff needs to happen twice or at all
-
 
 def generate_launch_description():
     
@@ -80,45 +61,23 @@ def generate_launch_description():
             plugin='image_proc::DebayerNode',
             name='debayer_node',
             namespace= right_namespace,
-            parameters=[{'debayer' : 0,
-                         'image_transport' : 'compressed'}],
+            parameters=[{'debayer' : 0
+                         
+                         }],
            
         ),
-        # ComposableNode(
-        #     package = 'image_proc',
-        #     plugin='image_proc::RectifyNode',
-        #     name='rectify_mono_node',
-        #     namespace=right_namespace,
-        #     parameters = [image_proc_rectify_config_path],
-        #     remappings=[
-        #         ('image', 'image_mono'),
-        #         ('image_rect', 'image_rect')
-        #     ],
-         
-        # ),
-           #Left Camera Processing
+    #Left Camera Processing
         ComposableNode(
             package='image_proc',
             plugin='image_proc::DebayerNode',
             name='debayer_node',
             namespace= left_namespace,
-            parameters=[{'debayer' : 0,
-                         'image_transport' : 'compressed'}],
+            parameters=[{'debayer' : 0
+                
+                        }],
        
         ),
         
-        # ComposableNode(
-        #     package = 'image_proc',
-        #     plugin='image_proc::RectifyNode',
-        #     name='rectify_mono_node',
-        #     namespace=left_namespace,
-        #     parameters = [image_proc_rectify_config_path],
-        #     remappings=[
-        #         ('image', 'image_mono'),
-        #         ('image_rect', 'image_rect')
-        #     ]
-
-        # )  
     ]
 
 
