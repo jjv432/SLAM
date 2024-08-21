@@ -80,41 +80,45 @@ def generate_launch_description():
             plugin='image_proc::DebayerNode',
             name='debayer_node',
             namespace= right_namespace,
+            parameters=[{'debayer' : 0,
+                         'image_transport' : 'compressed'}],
            
         ),
-        ComposableNode(
-            package = 'image_proc',
-            plugin='image_proc::RectifyNode',
-            name='rectify_mono_node',
-            namespace=right_namespace,
-            parameters = [image_proc_rectify_config_path],
-            remappings=[
-                ('image', 'image_mono'),
-                ('image_rect', 'image_rect')
-            ],
+        # ComposableNode(
+        #     package = 'image_proc',
+        #     plugin='image_proc::RectifyNode',
+        #     name='rectify_mono_node',
+        #     namespace=right_namespace,
+        #     parameters = [image_proc_rectify_config_path],
+        #     remappings=[
+        #         ('image', 'image_mono'),
+        #         ('image_rect', 'image_rect')
+        #     ],
          
-        ),
+        # ),
            #Left Camera Processing
         ComposableNode(
             package='image_proc',
             plugin='image_proc::DebayerNode',
             name='debayer_node',
             namespace= left_namespace,
+            parameters=[{'debayer' : 0,
+                         'image_transport' : 'compressed'}],
        
         ),
         
-        ComposableNode(
-            package = 'image_proc',
-            plugin='image_proc::RectifyNode',
-            name='rectify_mono_node',
-            namespace=left_namespace,
-            parameters = [image_proc_rectify_config_path],
-            remappings=[
-                ('image', 'image_mono'),
-                ('image_rect', 'image_rect')
-            ]
+        # ComposableNode(
+        #     package = 'image_proc',
+        #     plugin='image_proc::RectifyNode',
+        #     name='rectify_mono_node',
+        #     namespace=left_namespace,
+        #     parameters = [image_proc_rectify_config_path],
+        #     remappings=[
+        #         ('image', 'image_mono'),
+        #         ('image_rect', 'image_rect')
+        #     ]
 
-        )  
+        # )  
     ]
 
 

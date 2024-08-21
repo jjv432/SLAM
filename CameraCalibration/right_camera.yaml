@@ -19,3 +19,4 @@
       white_balance_automatic: 1
       white_balance_temperature: 4600
       auto_exposure: 3
+      image_transport: "compressed"
