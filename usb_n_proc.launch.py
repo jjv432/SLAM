@@ -9,6 +9,7 @@ from launch_ros.actions import LoadComposableNodes
 from launch_ros.actions import Node
 from launch_ros.descriptions import ComposableNode
 from launch.substitutions import LaunchConfiguration, EnvironmentVariable
+from tf2_ros import StaticTransformBroadcaster
 
 
 #Don't put commas after any of these!
@@ -92,12 +93,8 @@ def generate_launch_description():
                 ('image_rect', 'image_rect')
             ],
          
-
-        )    
-    ]
-
-    #Left Camera Processing
-    composable_nodes = [
+        ),
+           #Left Camera Processing
         ComposableNode(
             package='image_proc',
             plugin='image_proc::DebayerNode',
@@ -105,19 +102,21 @@ def generate_launch_description():
             namespace= left_namespace,
        
         ),
+        
         ComposableNode(
             package = 'image_proc',
             plugin='image_proc::RectifyNode',
             name='rectify_mono_node',
-            namespace=right_namespace,
+            namespace=left_namespace,
             parameters = [image_proc_rectify_config_path],
             remappings=[
                 ('image', 'image_mono'),
                 ('image_rect', 'image_rect')
             ]
 
-        )    
+        )  
     ]
+
 
     #Container Generation
     arg_container = DeclareLaunchArgument(
@@ -175,14 +174,14 @@ def generate_launch_description():
             executable='static_transform_publisher',
             output='screen',
             arguments=[
-                "--x", ".080",
-                "--y", "0",
+                "--x", ".040",
+                "--y", "0.029",
                 "--z", "0",
                 "--roll", "0",
                 "--pitch", "0",
                 "--yaw", "0",
                 "--frame-id", "camera_link",
-                "--child-frame-id", "right_camera_link"
+                "--child-frame-id", "camera2"
                 ]
         )
     
@@ -199,7 +198,7 @@ def generate_launch_description():
                 "--pitch", "0",
                 "--yaw", "0",
                 "--frame-id", "camera_link",
-                "--child-frame-id", "left_camera_link"
+                "--child-frame-id", "camera1"
                 ]
         )
     
