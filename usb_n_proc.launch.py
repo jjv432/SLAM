@@ -61,9 +61,9 @@ def generate_launch_description():
             plugin='image_proc::DebayerNode',
             name='debayer_node',
             namespace= right_namespace,
-            parameters=[{'debayer' : 0
+            # parameters=[{'debayer' : 0
                          
-                         }],
+            #              }],
            
         ),
     #Left Camera Processing
@@ -72,9 +72,9 @@ def generate_launch_description():
             plugin='image_proc::DebayerNode',
             name='debayer_node',
             namespace= left_namespace,
-            parameters=[{'debayer' : 0
+            # parameters=[{'debayer' : 0
                 
-                        }],
+            #             }],
        
         ),
         
