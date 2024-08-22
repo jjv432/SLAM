@@ -20,9 +20,6 @@ image_proc_rectify_config_path = project_path / "ImageProcRectify" / "image_proc
 ###################### TO DO  ######################
 #################################################### 
 
-#See if the container stuff needs to happen twice or at all
-
-
 def generate_launch_description():
     
     left_namespace = 'stereo/left',
@@ -64,8 +61,9 @@ def generate_launch_description():
             plugin='image_proc::DebayerNode',
             name='debayer_node',
             namespace= right_namespace,
-            parameters=[{'debayer' : 0,
-                         'image_transport' : 'compressed'}],
+            parameters=[{'debayer' : 0
+                         
+                         }],
            
         ),
     #Left Camera Processing
@@ -74,8 +72,9 @@ def generate_launch_description():
             plugin='image_proc::DebayerNode',
             name='debayer_node',
             namespace= left_namespace,
-            parameters=[{'debayer' : 0,
-                         'image_transport' : 'compressed'}],
+            parameters=[{'debayer' : 0
+                
+                        }],
        
         ),
         
