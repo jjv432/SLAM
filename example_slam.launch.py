@@ -21,8 +21,8 @@ def generate_launch_description():
         'enable_image_denoising': False,
         
         'enable_slam_visualization': False, # visualization may affects the performance
-        'enable_landmarks_view': True, # visualization may affects the performance
-        'enable_observations_view': True, # visualization may affects the performance
+        'enable_landmarks_view': False, # visualization may affects the performance
+        'enable_observations_view': False, # visualization may affects the performance
 
         'enable_localization_n_mapping': True,
 
@@ -33,7 +33,7 @@ def generate_launch_description():
         'base_frame': 'camera_link',
         'verbocity': 3,
         
-        #'image_buffer_size': 50,
+        'image_buffer_size': 200,
         
 
 

@@ -61,9 +61,7 @@ def generate_launch_description():
             plugin='image_proc::DebayerNode',
             name='debayer_node',
             namespace= right_namespace,
-            # parameters=[{'debayer' : 0
-                         
-            #              }],
+            parameters=[image_proc_rectify_config_path],
            
         ),
     #Left Camera Processing
@@ -72,9 +70,8 @@ def generate_launch_description():
             plugin='image_proc::DebayerNode',
             name='debayer_node',
             namespace= left_namespace,
-            # parameters=[{'debayer' : 0
-                
-            #             }],
+            parameters=[image_proc_rectify_config_path],
+            
        
         ),
         
@@ -137,9 +134,9 @@ def generate_launch_description():
             executable='static_transform_publisher',
             output='screen',
             arguments=[
-                "--x", ".040",
-                "--y", "0.029",
-                "--z", "0",
+                "--x", "0",
+                "--y", ".040",
+                "--z", "0.029",                
                 "--roll", "0",
                 "--pitch", "0",
                 "--yaw", "0",
@@ -154,9 +151,9 @@ def generate_launch_description():
             executable='static_transform_publisher',
             output='screen',
             arguments=[
-                "--x", "-.040",
-                "--y", ".029",
-                "--z", "0",
+                "--x", "0",
+                "--y", "-.040",
+                "--z", "0.029",   
                 "--roll", "0",
                 "--pitch", "0",
                 "--yaw", "0",
