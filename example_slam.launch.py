@@ -18,7 +18,7 @@ def generate_launch_description():
         'enable_debug_mode': False,
         'debug_dump_path': 'debug',
 
-        'enable_image_denoising': False,
+        'enable_image_denoising': True,
         
         'enable_slam_visualization': False, # visualization may affects the performance
         'enable_landmarks_view': False, # visualization may affects the performance

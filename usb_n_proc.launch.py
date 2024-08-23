@@ -152,7 +152,7 @@ def generate_launch_description():
             output='screen',
             arguments=[
                 "--x", "0",
-                "--y", "-.040",
+                "--y", "-0.040",
                 "--z", "0.029",   
                 "--roll", "0",
                 "--pitch", "0",
