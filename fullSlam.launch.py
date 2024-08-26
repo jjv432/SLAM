@@ -7,7 +7,7 @@ from launch.substitutions import LaunchConfiguration
 
 from pathlib import Path
 
-project_path = Path("workspaces/Slam/SLAM")
+project_path = Path(os.path.dirname(__file__))
 
 right_camera_config_path = project_path / "CameraCalibration" / "right_camera.yaml"
 left_camera_config_path = project_path / "CameraCalibration" / "left_camera.yaml"
