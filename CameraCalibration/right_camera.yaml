@@ -10,7 +10,7 @@
       image_height: 480
       camera_name: "camera2"
       # reusing same camera intrinsics only for demo, should really be unique for camera2"
-      camera_info_url: "file:///home/orl/workspaces/Slam/SLAM/CameraCalibration/right_camera_cal.yaml"
+      camera_info_url: "file:///home/orl/workspaces/Slam/SLAM/CameraCalibration/right.yaml"
       brightness: 0
       contrast: 32
       saturation: 64
