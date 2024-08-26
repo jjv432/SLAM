@@ -48,11 +48,14 @@ def generate_launch_description():
         ],
         parameters = [{
             'approximate_sync' : True,
-            'queue_size' : 10
+            'queue_size' : 100,
+            'correlation_window_size' : 75,
+            'speckle_size' : 1000,
+            'stereo_algorithm' : 1,
         }]
     )
     
-    point_node = Node(
+    rqt_node_point = Node(
         package = 'stereo_image_proc',
         executable='point_cloud_node',
         remappings=[
@@ -76,14 +79,23 @@ def generate_launch_description():
             ('image', 'disparity'),
         ],
         
+        parameters = [{
+            
+            
+        }]
+        
     )
     
     rqt_node_left = Node(
         package = 'image_view',
         executable= 'image_view',
-         remappings=[
+        remappings=[
             ('image', 'stereo/left/image_raw'),
         ],
+        parameters=[{
+            'window_name' : 'left_image'   
+        }],
+        
         
     )
     
@@ -93,13 +105,16 @@ def generate_launch_description():
          remappings=[
             ('image', 'stereo/right/image_raw'),
         ],
+         parameters=[{
+            'window_name' : 'right_image'   
+        }],
         
     )
     return launch.LaunchDescription([
         usb_cam_right,
         usb_cam_left,
         disparity_node,
-        # point_node,
+        rqt_node_point,
         rqt_node_left,
         rqt_node_right,
         rqt_node_disparity
