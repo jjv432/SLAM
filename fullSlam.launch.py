@@ -1,13 +1,12 @@
+import os
 import launch
-from launch.actions import DeclareLaunchArgument
-from launch.conditions import LaunchConfigurationEquals, LaunchConfigurationNotEquals
-from launch_ros.actions import ComposableNodeContainer, Node, LoadComposableNodes
+from launch_ros.actions import ComposableNodeContainer, Node
 from launch_ros.descriptions import ComposableNode
-from launch.substitutions import LaunchConfiguration
 
 from pathlib import Path
 
-project_path = Path("workspaces/Slam/SLAM")
+# project_path = Path("workspaces/Slam/SLAM")
+project_path = Path(os.path.dirname(__file__))
 
 right_camera_config_path = project_path / "CameraCalibration" / "right_camera.yaml"
 left_camera_config_path = project_path / "CameraCalibration" / "left_camera.yaml"
@@ -99,34 +98,13 @@ def generate_launch_description():
                 "--child-frame-id", "camera1"
             ]
     )
-
-    ####################################################
-    ################# IMAGE PROC NODES #################
-    #################################################### 
-
-    composable_nodes = [
-
-        #Right Camera Processing
-        ComposableNode(
-            package='image_proc',
-            plugin='image_proc::DebayerNode',
-            name='debayer_node',
-            namespace= right_namespace,
-            parameters=[image_proc_rectify_config_path],    
-        ),
-    #Left Camera Processing
-        ComposableNode(
-            package='image_proc',
-            plugin='image_proc::DebayerNode',
-            name='debayer_node',
-            namespace= left_namespace,
-            parameters=[image_proc_rectify_config_path],
-        ),
-
-        ComposableNode(
+    
+    
+    visual_slam_node = ComposableNode(
         name='visual_slam_node',
         package='isaac_ros_visual_slam',
         plugin='nvidia::isaac_ros::visual_slam::VisualSlamNode',
+     
         parameters=[{
             
         
@@ -134,19 +112,20 @@ def generate_launch_description():
 
         'enable_imu_fusion': False,
         'debug_imu_mode': False,
+        
         'enable_debug_mode': False,
         'debug_dump_path': 'debug',
 
-        'enable_image_denoising': True,
+        'enable_image_denoising': False,
         
-        'enable_slam_visualization': False, # visualization may affects the performance
-        'enable_landmarks_view': False, # visualization may affects the performance
+        'enable_slam_visualization': True, # visualization may affects the performance
+        'enable_landmarks_view': True, # visualization may affects the performance
         'enable_observations_view': False, # visualization may affects the performance
 
         'enable_localization_n_mapping': True,
 
         'image_jitter_threshold_ms': 35.00, # for 30 FPS
-        'sync_matching_threshold_ms': 10.0, # desync in ms between different cams
+        'sync_matching_threshold_ms': 20.0, # desync in ms between different cams
 
         'num_cameras': 2, # 2 cams within one stereo camera
         'base_frame': 'camera_link',
@@ -162,38 +141,48 @@ def generate_launch_description():
                     ('visual_slam/camera_info_1', '/stereo/right/camera_info')
             ]
     )
-        
-    ]
+
+    ####################################################
+    ################# IMAGE PROC NODES #################
+    #################################################### 
 
 
-    #Container Generation
-    arg_container = DeclareLaunchArgument(
-        name = 'container', default_value='',
-        description=(
-            'Name of an existing node container to load launched nodes into. '
-            'If unset, a new container will be created'
+        #Right Camera Processing
+    right_camera_proc = ComposableNode(
+            package='image_proc',
+            plugin='image_proc::DebayerNode',
+            name='debayer_node',
+            namespace= right_namespace,
+            parameters=[image_proc_rectify_config_path]
         )
-    )
+    #Left Camera Processing
+    left_camera_proc = ComposableNode(
+            package='image_proc',
+            plugin='image_proc::DebayerNode',
+            name='debayer_node',
+            namespace= left_namespace,
+            parameters=[image_proc_rectify_config_path]
+        )
 
-    # If an existing container is not provided, start a container and load nodes into it
-    image_processing_container = ComposableNodeContainer(
-        condition=LaunchConfigurationEquals('container', ''),
-        name='image_proc_container',
-        namespace="image_proc_container",
+
+    visual_slam_launch_container = ComposableNodeContainer(
+        name='visual_slam_launch_container',
+        namespace='',
         package='rclcpp_components',
         executable='component_container',
-        composable_node_descriptions=composable_nodes,
+        composable_node_descriptions=[visual_slam_node],
         output='screen'
     )
-
-    # If an existing container name is provided, load composable nodes into it
-    # This will block until a container with the provided name is available and nodes are loaded
-    load_composable_nodes = LoadComposableNodes(
-        condition=LaunchConfigurationNotEquals('container', ''),
-        composable_node_descriptions=composable_nodes,
-        target_container=LaunchConfiguration('container'),
+    
+    image_proc_launch_container = ComposableNodeContainer(
+        name='image_proc_launch_container',
+        namespace='',
+        package='rclcpp_components',
+        executable='component_container',
+        composable_node_descriptions=[left_camera_proc, right_camera_proc],
+        output='screen'
     )
-
+    
     
     return launch.LaunchDescription([
         usb_cam_right,
@@ -201,7 +190,6 @@ def generate_launch_description():
         camera_base_tf,
         left_base_tf,
         right_base_tf,
-        arg_container,
-        image_processing_container,
-        load_composable_nodes
+        visual_slam_launch_container,
+        image_proc_launch_container
     ])
