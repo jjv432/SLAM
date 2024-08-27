@@ -9,14 +9,12 @@ from launch.substitutions import LaunchConfiguration
 from pathlib import Path
 
 project_path = Path(os.path.dirname(__file__))
+project_path = Path("/home/strideonr/workspaces/SLAM")
 
-right_camera_config_path = project_path / "CameraCalibration" / "right_camera.yaml"
-left_camera_config_path = project_path / "CameraCalibration" / "left_camera.yaml"
-camera_config_path = project_path / "CameraCalibration" / "usb_cam_cal_params.yaml"
+right_camera_config_path = project_path / "BlankCameraCalibration" / "right_camera.yaml"
+left_camera_config_path = project_path / "BlankCameraCalibration" / "left_camera.yaml"
+camera_config_path = project_path / "BlankCameraCalibration" / "usb_cam_cal_params.yaml"
 
-print(project_path)
-
-print(camera_config_path)
 
 def generate_launch_description():
     
@@ -53,8 +51,8 @@ def generate_launch_description():
         output = 'screen',
         remappings=[('right', '/stereo/right/image_raw'),
                     ('left', '/stereo/left/image_raw'),
-                    ('right_camera_info', '/stereo/right/camera_info'),
-                    ('left_camera_info', '/stereo/left/camera_info')
+                    ('right_camera', '/stereo/right'),
+                    ('left_camera', '/stereo/left')
                     
             ]
         

@@ -3,14 +3,14 @@
       video_device: "/dev/video4"
       framerate: 30.0
       io_method: "mmap"
-      frame_id: "camera2"
+      frame_id: camera/right
       pixel_format: "mjpeg2rgb"
       av_device_format: "YUV422P"
       image_width: 640
       image_height: 480
-      camera_name: "camera2"
+      camera_name: "narrow_stereo/right"
       # reusing same camera intrinsics only for demo, should really be unique for camera2"
-      camera_info_url: "file:///home/orl/workspaces/Slam/SLAM/CameraCalibration/right.yaml"
+      camera_info_url: "file:///home/strideonr/workspaces/SLAM/CameraCalibration/right.yaml"
       brightness: 0
       contrast: 32
       saturation: 64

@@ -5,13 +5,14 @@ from launch_ros.descriptions import ComposableNode
 from pathlib import Path
 
 project_path = Path(os.path.dirname(__file__))
+project_path = Path("/home/strideonr/workspaces/SLAM")
 right_camera_config_path = project_path / "CameraCalibration" / "right_camera.yaml"
 left_camera_config_path = project_path / "CameraCalibration" / "left_camera.yaml"
 
 def generate_launch_description():
     
-    left_namespace = 'stereo/left',
-    right_namespace = 'stereo/right',  
+    left_namespace ='stereo/left',
+    right_namespace ='stereo/right',  
 
 
     ####################################################
@@ -81,7 +82,7 @@ def generate_launch_description():
         
         parameters = [{
             
-            
+            'window_name' : 'disparity_image'
         }]
         
     )

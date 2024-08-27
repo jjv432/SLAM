@@ -3,13 +3,13 @@
       video_device: "/dev/video0"
       framerate: 30.0
       io_method: "mmap"
-      frame_id: "camera1"
+      frame_id: camera/left
       pixel_format: "mjpeg2rgb"  # see usb_cam/supported_formats for list of supported formats
       av_device_format: "YUV422P"
       image_width: 640
       image_height: 480
-      camera_name: "camera1"
-      camera_info_url: "file:///home/orl/workspaces/Slam/SLAM/CameraCalibration/left.yaml"
+      camera_name: narrow_stereo/left
+      camera_info_url: "file:///home/strideonr/workspaces/SLAM/CameraCalibration/left.yaml"
       brightness: 0
       contrast: 32
       saturation: 64
