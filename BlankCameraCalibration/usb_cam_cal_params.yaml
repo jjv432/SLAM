@@ -1,0 +1,5 @@
+/**:
+   ros__parameters:
+     size: 10x7
+     square: 0.022
+     approximate: .1
